@@ -12,8 +12,8 @@
         <Label Content="Username"/>
         <TextBox Name="txtUsername" FontSize="18"/>
         <Label Content="Password"/>
-        <PasswordBox Name="txtPassword" FontSize="18" Margin="0,0,0,15"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <PasswordBox Name="txtPassword" FontSize="18"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
             <Button Name="btnSubmit" Content="Submit" Margin="0,0,20,0" Height="30" Width="60" Click="btnSubmit_Click"/>
             <Button Name="btnCancel" Content="Cancel" Height="30" Width="60" Click="btnCancel_Click"/>
         </StackPanel>
