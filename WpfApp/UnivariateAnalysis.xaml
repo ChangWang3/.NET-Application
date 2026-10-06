@@ -8,9 +8,9 @@
         Title="UnivariateAnalysis" Height="450" Width="800">
     <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
         <Button Name="ReturnBtn" Content="Return to Main" Width="100" Height="30" Margin="0,20,20,0" Click="ReturnBtn_Click"/>
-        <TextBox Name="txtNumbers" PreviewTextInput="txtNumbers_PreviewTextInput" Margin="-556,107,424,-191" TextWrapping="Wrap"/>
-        <Button Name="Calculate" Content="Calculate" Margin="-550,269,550,-269" Click="Calculate_Click"/>
-        <TextBox Name="txtResult" Margin="-193,149,193,-149"/>
+        <TextBox Name="txtNumbers" PreviewTextInput="txtNumbers_PreviewTextInput" Margin="-556,107,436,-137" TextWrapping="Wrap" AcceptsReturn="True"/>
+        <Button Name="Calculate" Content="Calculate" Margin="-550,269,550,-269" Click="Calculate_Click" Height="50"/>
+        <TextBox Name="txtResult" Margin="-190,107,158,-191" IsReadOnly="True"/>
     </Grid>
     
 </Window>
