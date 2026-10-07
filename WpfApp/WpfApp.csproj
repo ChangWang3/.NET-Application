@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="10.0.12" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.12" />
+    <PackageReference Include="ScottPlot.WPF" Version="5.1.59" />
   </ItemGroup>
 
 </Project>

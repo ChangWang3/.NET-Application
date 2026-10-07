@@ -5,12 +5,19 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="UnivariateAnalysis" Height="450" Width="800">
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        Title="UnivariateAnalysis" Height="500" Width="800">
     <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
-        <Button Name="ReturnBtn" Content="Return to Main" Width="100" Height="30" Margin="0,20,20,0" Click="ReturnBtn_Click"/>
-        <TextBox Name="txtNumbers" PreviewTextInput="txtNumbers_PreviewTextInput" Margin="-556,107,436,-137" TextWrapping="Wrap" AcceptsReturn="True"/>
-        <Button Name="Calculate" Content="Calculate" Margin="-550,269,550,-269" Click="Calculate_Click" Height="50"/>
-        <TextBox Name="txtResult" Margin="-190,107,158,-191" IsReadOnly="True"/>
+        <Button Name="ReturnBtn" Content="Return to Main" Width="100" Height="30" Margin="0,20,20,0" Click="ReturnBtn_Click" HorizontalAlignment="Center"/>
+        <Label Content="Enter data set" Margin="-558,74,572,-55"/>
+        <TextBox Name="txtData" PreviewTextInput="txtData_PreviewTextInput"  Margin="-555,105,435,-135" TextWrapping="Wrap" AcceptsReturn="True" MaxWidth="240"/>
+        <Button Name="Calculate" Content="Calculate" Margin="-555,240,555,-240" Click="Calculate_Click" Height="50"/>
+        <Label Content="Summary" Margin="-279,74,293,-55"/>
+        <TextBox Name="txtResult" Margin="-279,104,259,-215" IsReadOnly="True"/>
+        <RadioButton Name="RadioPopulationStd" Content="Population" Margin="-550,204,579,-173" IsChecked="True"/>
+        <RadioButton Name="RadioSampleStd" Content="Sample" Margin="-435,204,435,-173"/>
+        <ScottPlot:WpfPlot Name="HistogramPlot" Margin="-314,290,236,-375"/>
+        <ScottPlot:WpfPlot Name="BoxAndWhiskersPlot" Margin="-56,104,20,-240"/>
     </Grid>
-    
+
 </Window>
