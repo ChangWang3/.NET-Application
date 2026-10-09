@@ -9,6 +9,7 @@
     <Grid>
         <Button Name="LogoutBtn" Content="Logout" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,100,0" Width="60" Height="30" Click="LogoutBtn_Click"/>
         <Button Name="ExitBtn" Content="Exit" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,20,20,0" Width="60" Height="30" Click="ExitBtn_Click"/>
-        <Button Name="UnivariateBtn" Content="Univariate Data Analysis" HorizontalAlignment="Center" VerticalAlignment="Top" Width="140" Height="30" Margin="0,100,0,0" Click="UnivariateBtn_Click"/>
+        <Button Name="UnivariateBtn" Content="Descriptive Statistics" HorizontalAlignment="Center" VerticalAlignment="Top" Width="160" Height="30" Margin="0,100,0,0" Click="UnivariateBtn_Click"/>
+        <Button Name="BivariateBtn" Content="Correlation and Regression" HorizontalAlignment="Center" VerticalAlignment="Top" Width="160" Height="30" Margin="0,150,0,0" Click="BivariateBtn_Click"/>
     </Grid>
 </Window>

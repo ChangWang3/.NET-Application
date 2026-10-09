@@ -1,0 +1,86 @@
+﻿<Window x:Class="WpfApp.BivariateAnalysis"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        mc:Ignorable="d"
+        Title="BivariateAnalysis" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <Label Content="Data"
+                       FontSize="18"
+                       FontWeight="Bold"
+                       Margin="0,0,0,10"/>
+
+            <DataGrid Name="DataGrid"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="True"
+                      ItemsSource="{Binding Points}"
+                      Height="240"
+                      PreviewTextInput="DataGrid_PreviewTextInput">
+
+                <DataGrid.Columns>
+
+                    <DataGridTextColumn Header="X"
+                                        Binding="{Binding X, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
+
+                    <DataGridTextColumn Header="Y"
+                                        Binding="{Binding Y, UpdateSourceTrigger=PropertyChanged}"
+                                        Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        Margin="0,10,0,10">
+
+                <Button Content="Add Row"
+                        Name="BtnAddRow"
+                        Click="BtnAddRow_Click"
+                        Padding="15,5"
+                        Margin="0,0,5,0"/>
+
+                <Button Content="Delete Row"
+                        Name="BtnDeleteRow"
+                        Click="BtnDeleteRow_Click"
+                        Padding="15,5"/>
+
+                <Button Content="Clear"
+                        Name="BtnClear"
+                        Click="BtnClear_Click"
+                        Padding="15,5"
+                        Margin="5,0,0,0"/>
+            </StackPanel>
+
+            <CheckBox Name="ShowEquation"
+                      Content="Show equation and correlation coefficient" Margin="0,5,0,0"/>
+            
+            <StackPanel Grid.Row="1"
+                        Orientation="Horizontal"
+                        Margin="0,10,0,10">
+                <Button Content="Plot"
+                        Name="Plot"
+                        Width="80"
+                        Height="30"
+                        HorizontalAlignment="Left"
+                        Margin="0,10,0,0"
+                        Click="Plot_Click"/>
+                <Button Content="Return"
+                        Name="Return"
+                        Width="80"
+                        Height="30"
+                        Margin="100,10,0,0"
+                        Click="Return_Click"/>
+            </StackPanel>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="ScatterPlot"
+                           Grid.Column="1"/>
+        
+    </Grid>
+</Window>

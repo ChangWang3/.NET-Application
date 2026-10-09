@@ -39,5 +39,12 @@ namespace WpfApp
             univariateAnalysis.Show();
             Close();
         }
+
+        private void BivariateBtn_Click(object sender, RoutedEventArgs e)
+        {
+            BivariateAnalysis bivariateAnalysis = new BivariateAnalysis();
+            bivariateAnalysis.Show();
+            Close();
+        }
     }
 }

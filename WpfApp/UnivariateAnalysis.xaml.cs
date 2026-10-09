@@ -64,7 +64,6 @@ namespace WpfApp
                             txtResult.Text += n + " ";
                         }
                     }
-                    //MessageBox.Show("Median: " + median + "Percentile: " + StatisticsCalculator.Percentile(data, 50));
 
                     // Only one radio buttun can be checked
                     if (RadioPopulationStd.IsChecked == true)
@@ -169,8 +168,6 @@ namespace WpfApp
                 WhiskerMin = min,
                 WhiskerMax = max,
                 BoxMiddle = median,
-                
-
             };
 
             BoxAndWhiskersPlot.Plot.Title("Box and Whiskers Plot");
