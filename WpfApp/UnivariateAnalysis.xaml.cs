@@ -69,12 +69,12 @@ namespace WpfApp
                     if (RadioPopulationStd.IsChecked == true)
                     {
                         double popStd = StatisticsCalculator.PopulateStandardDeviation(data, mean);
-                        txtResult.Text += "\nStandard Deviation: " + popStd;
+                        txtResult.Text += "\nStandard Deviation: " + Math.Round(popStd, 3);
                     }
                     if (RadioSampleStd.IsChecked == true)
                     {
                         double samStd = StatisticsCalculator.SampleStandardDeviation(data, mean);
-                        txtResult.Text += "\nStandard Deviation: " + samStd;
+                        txtResult.Text += "\nStandard Deviation: " + Math.Round(samStd, 3);
                     }
                     
                     if (DataAreIntegers(data))
@@ -121,14 +121,14 @@ namespace WpfApp
 
             var hist = ScottPlot.Statistics.Histogram.WithBinCount(count: 20, minValue: data.First() - 1, maxValue: data.Last() + 1);
             var histPlot = HistogramPlot.Plot.Add.Histogram(hist);
-            histPlot.BarWidthFraction = 0.7;
+            histPlot.BarWidthFraction = 0.8;
             hist.AddRange(data);
             HistogramPlot.Plot.Axes.AutoScaleY();
 
             HistogramPlot.Plot.Title("Histogram");
             HistogramPlot.Plot.XLabel("Value");
             HistogramPlot.Plot.YLabel("Frequency");
-            HistogramPlot.Plot.Axes.Margins(bottom: 0.1, top: 0.1);
+            HistogramPlot.Plot.Axes.Margins(bottom: 0, top: 0);
             HistogramPlot.Refresh();
 
         }
@@ -150,7 +150,7 @@ namespace WpfApp
             HistogramPlot.Plot.XLabel("Value");
             HistogramPlot.Plot.YLabel("Frequency");
 
-            HistogramPlot.Plot.Axes.Margins(bottom: 0.1, top: 0.1);
+            HistogramPlot.Plot.Axes.Margins(bottom: 0, top: 0);
 
             HistogramPlot.Refresh();
             
@@ -162,7 +162,7 @@ namespace WpfApp
             BoxAndWhiskersPlot.Plot.Clear();
             ScottPlot.Box box = new()
             {
-                Position = 5,
+                Position = 0,
                 BoxMin = lowerQuartile,
                 BoxMax = upperQuartile,
                 WhiskerMin = min,
@@ -170,9 +170,9 @@ namespace WpfApp
                 BoxMiddle = median,
             };
 
-            BoxAndWhiskersPlot.Plot.Title("Box and Whiskers Plot");
+            BoxAndWhiskersPlot.Plot.Title("Box Plot");
             BoxAndWhiskersPlot.Plot.Add.Box(box);
-            BoxAndWhiskersPlot.Plot.Axes.SetLimits(0, 10, min - 1, max + 1);
+            BoxAndWhiskersPlot.Plot.Axes.SetLimits(-2, 2, min - 1, max + 1);
             BoxAndWhiskersPlot.Refresh();
         }
 

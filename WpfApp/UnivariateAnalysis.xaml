@@ -6,18 +6,57 @@
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
         xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
-        Title="UnivariateAnalysis" Height="500" Width="800">
-    <Grid HorizontalAlignment="Right" VerticalAlignment="Top">
-        <Button Name="ReturnBtn" Content="Return to Main" Width="100" Height="30" Margin="0,20,20,0" Click="ReturnBtn_Click" HorizontalAlignment="Center"/>
-        <Label Content="Enter data set" Margin="-558,74,572,-55"/>
-        <TextBox Name="txtData" PreviewTextInput="txtData_PreviewTextInput"  Margin="-555,105,435,-135" TextWrapping="Wrap" AcceptsReturn="True" MaxWidth="240"/>
-        <Button Name="Calculate" Content="Calculate" Margin="-555,240,555,-240" Click="Calculate_Click" Height="50"/>
-        <Label Content="Summary" Margin="-279,74,293,-55"/>
-        <TextBox Name="txtResult" Margin="-279,104,259,-215" IsReadOnly="True"/>
-        <RadioButton Name="RadioPopulationStd" Content="Population" Margin="-550,204,579,-173" IsChecked="True"/>
-        <RadioButton Name="RadioSampleStd" Content="Sample" Margin="-435,204,435,-173"/>
-        <ScottPlot:WpfPlot Name="HistogramPlot" Margin="-314,290,236,-375"/>
-        <ScottPlot:WpfPlot Name="BoxAndWhiskersPlot" Margin="-56,104,20,-240"/>
+        Title="UnivariateAnalysis" Height="450" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition Width="125"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Column="0" Margin="0,0,10,0">
+            <Label Content="Enter data set"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,10"/>
+            <TextBox Name="txtData" 
+                     PreviewTextInput="txtData_PreviewTextInput" 
+                     TextWrapping="Wrap" 
+                     AcceptsReturn="True" 
+                     Height="160"
+                     MaxWidth="200"/>
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                <RadioButton Name="RadioPopulationStd" Content="Population" IsChecked="True"/>
+                <RadioButton Name="RadioSampleStd" Content="Sample" Margin="20,0,0,0"/>
+            </StackPanel>
+            <Button Name="Calculate" 
+                    Content="Calculate" 
+                    Click="Calculate_Click" 
+                    Width="80" 
+                    Height="30" 
+                    HorizontalAlignment="Left" 
+                    Margin="0,10,0,0"/>
+            <Button Name="ReturnBtn" 
+                    Content="Return" 
+                    Width="80" 
+                    Height="30" 
+                    Margin="0,25,0,0" 
+                    Click="ReturnBtn_Click" 
+                    HorizontalAlignment="Left"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1">
+            <Label Content="Summary"
+                   FontSize="18"
+                   FontWeight="Bold"
+                   Margin="0,0,0,10"/>
+            <TextBox Name="txtResult"
+                     IsReadOnly="True"
+                     TextWrapping="Wrap"/>
+        </StackPanel>
+        <ScottPlot:WpfPlot Name="BoxAndWhiskersPlot" Grid.Column="2"/>
+        <ScottPlot:WpfPlot Name="HistogramPlot" Grid.Column="3"/>
+        
     </Grid>
 
 </Window>
