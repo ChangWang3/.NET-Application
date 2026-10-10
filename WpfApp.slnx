@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="NUnitTest/NUnitTest.csproj" Id="1684a5a7-e182-49a8-8596-cdfe966f9413" />
   <Project Path="WpfApp/WpfApp.csproj" />
 </Solution>

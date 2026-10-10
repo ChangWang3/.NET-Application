@@ -24,7 +24,7 @@ namespace WpfApp
             }
             else
             {
-                return (numbers[(numbers.Count + 1) / 2] + numbers[(numbers.Count - 1) / 2]) / 2;
+                return (numbers[(numbers.Count) / 2] + numbers[(numbers.Count - 1) / 2]) / 2;
             }
         }
 
@@ -36,11 +36,11 @@ namespace WpfApp
             }
             else
             {
-                return (numbers[(numbers.Length + 1) / 2] + numbers[(numbers.Length - 1) / 2]) / 2;
+                return (numbers[(numbers.Length) / 2] + numbers[(numbers.Length - 1) / 2]) / 2;
             }
         }
 
-        public static double PopulateStandardDeviation(List<double> numbers, double mean)
+        public static double PopulationStandardDeviation(List<double> numbers, double mean)
         {
             if (numbers.Count < 2)
             {
@@ -89,9 +89,10 @@ namespace WpfApp
             return data[lower] + fraction * (data[upper] - data[lower]);
         }
 
-        public static List<double> Outliers(List<double> data, double upperQuartile, double lowerQuartile, double interquartileRange) 
+        public static List<double> Outliers(List<double> data, double upperQuartile, double lowerQuartile) 
         {
             List<double> outliers = new List<double>();
+            double interquartileRange = upperQuartile - lowerQuartile;
             double lowerBound = lowerQuartile - interquartileRange * 1.5;
             double upperBound = upperQuartile + interquartileRange * 1.5;
 

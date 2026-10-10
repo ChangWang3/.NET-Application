@@ -48,14 +48,14 @@ namespace WpfApp
                     double lowerQuartile = StatisticsCalculator.Percentile(data, 25);
                     double interquartileRange = upperQuartile - lowerQuartile;
 
-                    txtResult.Text = "Mean: " + mean + "\nMedian: " + median + "\nCount: " +
+                    txtResult.Text = "Mean: " + Math.Round(mean, 2) + "\nMedian: " + median + "\nCount: " +
                     data.Count + "\nMin: " + data.First() + "\nMax: " + data.Last() +
                     "\nRange: " + Math.Abs(data.Last() - data.First()) + "\nUpper Quartile: " + 
                     upperQuartile + "\nLower Quartile: " +
                     lowerQuartile + "\nInterquartile Range: " + interquartileRange;
 
                     List<double> outliers = StatisticsCalculator.Outliers(data, upperQuartile, 
-                        lowerQuartile, interquartileRange);
+                        lowerQuartile);
                     if (outliers.Count > 0) 
                     {
                         txtResult.Text += "\nOutliers: ";
@@ -68,7 +68,7 @@ namespace WpfApp
                     // Only one radio buttun can be checked
                     if (RadioPopulationStd.IsChecked == true)
                     {
-                        double popStd = StatisticsCalculator.PopulateStandardDeviation(data, mean);
+                        double popStd = StatisticsCalculator.PopulationStandardDeviation(data, mean);
                         txtResult.Text += "\nStandard Deviation: " + Math.Round(popStd, 3);
                     }
                     if (RadioSampleStd.IsChecked == true)
