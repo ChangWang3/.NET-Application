@@ -46,5 +46,19 @@ namespace WpfApp
             bivariateAnalysis.Show();
             Close();
         }
+
+        private void ProbabilityBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ProbabilityWindow probability = new ProbabilityWindow();
+            probability.Owner = this;
+            probability.ShowDialog();
+        }
+
+        private void CsvWorkspaceBtn_Click(object sender, RoutedEventArgs e)
+        {
+            CsvWorkspace csvWorkspace = new CsvWorkspace();
+            csvWorkspace.Owner = this;
+            csvWorkspace.ShowDialog();
+        }
     }
 }
