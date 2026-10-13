@@ -110,10 +110,16 @@ namespace WpfApp
                 MessageBox.Show("Enter at least two points for analysis");
             } else
             {
-                ShowLineOfBestFit(x, y, xMax, yMax);
                 if (ShowEquation.IsChecked == true)
                 {
-                    ShowLabels(x, y, xMax, yMax);
+                    var (slope, intercept) = StatisticsCalculator.LeastSquares(x, y);
+                    slope = Math.Round(slope, 2);
+                    intercept = Math.Round(intercept, 2);
+
+                    // Starts at x = 0, y = intercept, and ends at the max x value and the y value according to
+                    // slope * xMax + intercept
+                    ScatterPlot.Plot.Add.Line(0, intercept, xMax, slope * xMax + intercept).LineWidth = 3;
+                    ShowLabels(x, y, xMax, yMax, slope, intercept);
                 }
             }
             ScatterPlot.Plot.Title("Scatter Plot");
@@ -122,23 +128,9 @@ namespace WpfApp
             ScatterPlot.Refresh();
         }
 
-        private void ShowLineOfBestFit(double[] x, double[] y, double xMax, double yMax)
-        {
-            var (slope, intercept) = StatisticsCalculator.LeastSquare(x, y);
-            slope = Math.Round(slope, 2);
-            intercept = Math.Round(intercept, 2);
-            // Starts at x = 0, y = intercept, and ends at the max x value and the y value according to
-            // slope * xMax + intercept
-            ScatterPlot.Plot.Add.Line(0, intercept, xMax, slope * xMax + intercept).LineWidth = 3;
-        }
-
-        private void ShowLabels(double[] x, double[] y, double xMax, double yMax)
+        private void ShowLabels(double[] x, double[] y, double xMax, double yMax, double slope, double intercept)
         {
             double correlation = StatisticsCalculator.CorrelationCoefficient(x, y);
-            var (slope, intercept) = StatisticsCalculator.LeastSquare(x, y);
-
-            slope = Math.Round(slope, 2);
-            intercept = Math.Round(intercept, 2);
             string label = $"y = {slope}x";
 
             if (intercept >= 0)

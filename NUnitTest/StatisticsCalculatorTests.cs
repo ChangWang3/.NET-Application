@@ -95,7 +95,7 @@ namespace NUnitTest
         [TestCase(new double[] { 22, 54, 76, 98, 115, 143 }, new double[] { 54, 65, 123, 100, 124, 234 }, 1.30, 6.38)]
         public void LeastSquaresTest(double[] x, double[] y, double expectedSlope, double expectedIntercept)
         {
-            var (slope, intercept) = StatisticsCalculator.LeastSquare(x, y);
+            var (slope, intercept) = StatisticsCalculator.LeastSquares(x, y);
             slope = Math.Round(slope, 2);
             intercept = Math.Round(intercept, 2);
             using (Assert.EnterMultipleScope())
@@ -107,6 +107,7 @@ namespace NUnitTest
 
         [TestCase(10, 6, 0.5, 0.205)]
         [TestCase(8, 5, 0.16667, 0.004)]
+        [TestCase(14, 5, 0.25, 0.147)]
         public void BinomialProbabilityTest(int trials, int successes, double successPossibility, double expected)
         {
             double result = StatisticsCalculator.BinomialProbability(trials, successes, successPossibility);

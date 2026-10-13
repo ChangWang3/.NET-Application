@@ -10,55 +10,55 @@ namespace WpfApp
 {
     public static class StatisticsCalculator
     {
-        public static double Mean(List<double> numbers)
+        public static double Mean(List<double> data)
         {
             double sum = 0;
-            for (int i = 0; i < numbers.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
-                sum += numbers[i];
+                sum += data[i];
             }
-            return sum / numbers.Count;
+            return sum / data.Count;
         }
 
-        public static double Median(List<double> numbers) 
+        public static double Median(List<double> data) 
         {
-            if (numbers.Count % 2 != 0)
+            if (data.Count % 2 != 0)
             {
-                return numbers[(int)Math.Floor((double)numbers.Count / 2)];
+                return data[(int)Math.Floor((double)data.Count / 2)];
             }
             else
             {
-                return (numbers[(numbers.Count) / 2] + numbers[(numbers.Count - 1) / 2]) / 2;
+                return (data[(data.Count) / 2] + data[(data.Count - 1) / 2]) / 2;
             }
         }
 
-        public static double Median(double[] numbers)
+        public static double Median(double[] data)
         {
-            if (numbers.Length % 2 != 0)
+            if (data.Length % 2 != 0)
             {
-                return numbers[(int)Math.Floor((double)numbers.Length / 2)];
+                return data[(int)Math.Floor((double)data.Length / 2)];
             }
             else
             {
-                return (numbers[(numbers.Length) / 2] + numbers[(numbers.Length - 1) / 2]) / 2;
+                return (data[(data.Length) / 2] + data[(data.Length - 1) / 2]) / 2;
             }
         }
 
-        public static double PopulationStandardDeviation(List<double> numbers, double mean)
+        public static double PopulationStandardDeviation(List<double> data, double mean)
         {
-            if (numbers.Count < 2)
+            if (data.Count < 2)
             {
                 return -1;
             }
             double squaredDiffSum = 0;
 
-            for (int i = 0; i < numbers.Count; i++)
+            for (int i = 0; i < data.Count; i++)
             {
-                double diff = numbers[i] - mean;
+                double diff = data[i] - mean;
                 squaredDiffSum += diff * diff;
             }
 
-            return Math.Sqrt(squaredDiffSum / numbers.Count);
+            return Math.Sqrt(squaredDiffSum / data.Count);
         }
 
         public static double SampleStandardDeviation(List<double> numbers, double mean)
@@ -132,7 +132,7 @@ namespace WpfApp
         }
 
         // Uses least squares to find the line of best fit, the slope and intercept are calculated together
-        public static (double slope, double intercept) LeastSquare(double[] x, double[] y)
+        public static (double slope, double intercept) LeastSquares(double[] x, double[] y)
         {
             double xSum = 0;
             double ySum = 0;

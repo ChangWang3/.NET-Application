@@ -62,7 +62,7 @@
             </StackPanel>
 
             <CheckBox Name="ShowEquation"
-                      Content="Show equation and correlation coefficient" 
+                      Content="Show line and correlation coefficient" 
                       Margin="0,5,0,0"/>
             
             <StackPanel Grid.Row="1"
