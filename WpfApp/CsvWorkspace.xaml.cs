@@ -81,7 +81,7 @@ namespace WpfApp
         private void RefreshPreview()
         {
             displayedValues = PositiveOnlyCheckBox.IsChecked == true
-                ? StatisticsCalculator.PositiveCsvValues(importedValues)
+                ? CsvDataService.PositiveCsvValues(importedValues)
                 : importedValues.ToList();
 
             if (SortComboBox.SelectedIndex == 1)
