@@ -15,10 +15,13 @@ namespace WpfApp
         {
             ErrorText.Text = "";
             ResultTextBox.Clear();
+            DistributionPlot.Plot.Clear();
+            DistributionPlot.Plot.Title("");
+            DistributionPlot.Refresh();
 
             try
             {
-                // Read numbers from the three input boxes.
+                // read numbers from the three input boxes.
                 if (!int.TryParse(TrialsTextBox.Text, NumberStyles.Integer, CultureInfo.InvariantCulture, out int trials))
                 {
                     throw new ArgumentException("Enter a whole number for the number of trials.");
@@ -34,7 +37,7 @@ namespace WpfApp
                     throw new ArgumentException("Enter a probability from 0 to 1 using a decimal point, for example 0.5.");
                 }
 
-                // Reuse the existing calculations and their range validation.
+                // reuse the existing calculations (from StaticticsCalculator file) and their range validation.
                 double result;
                 string description;
                 if (CalculationTypeComboBox.SelectedIndex == 0)
@@ -57,18 +60,37 @@ namespace WpfApp
                     throw new ArgumentException("Choose a calculation type.");
                 }
 
-                // Show both the 0-to-1 probability and its percentage.
-                // General formatting keeps very small probabilities visible.
+                // show both the 0-to-1 probability & its percentage; General formatting keeps very small probabilities visible
                 string probabilityText = result.ToString("G10", CultureInfo.InvariantCulture);
                 string percentageText = (result * 100).ToString("G10", CultureInfo.InvariantCulture);
                 ResultTextBox.Text = description + "\n\nProbability: " + probabilityText
                     + "\nPercentage: " + percentageText + "%";
+                DrawDistribution(trials, successProbability);
             }
             catch (ArgumentException exception)
             {
-                // Invalid input is reported inline; no old result remains on screen.
+                // no old result remains on screen
                 ErrorText.Text = exception.Message;
             }
+        }
+
+        private void DrawDistribution(int trials, double successProbability)
+        {
+            // k is the number of successes, PS: P(X = k)
+            var probabilities = StatisticsCalculator.BinomialDistribution(trials, successProbability);
+            double[] successCounts = new double[probabilities.Count];
+            for (int k = 0; k < successCounts.Length; k++)
+            {
+                successCounts[k] = k;
+            }
+
+            DistributionPlot.Plot.Add.Bars(successCounts, probabilities.ToArray());
+            DistributionPlot.Plot.Title($"Binomial distribution (n = {trials}, p = {successProbability.ToString("G4", CultureInfo.InvariantCulture)})");
+            DistributionPlot.Plot.XLabel("Successes (k)");
+            DistributionPlot.Plot.YLabel("Probability P(X = k)");
+            DistributionPlot.Plot.Axes.Margins(bottom: 0);
+            DistributionPlot.Plot.Axes.AutoScale();
+            DistributionPlot.Refresh();
         }
     }
 }

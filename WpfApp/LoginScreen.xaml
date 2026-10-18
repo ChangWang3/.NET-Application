@@ -1,21 +1,50 @@
 ﻿<Window x:Class="WpfApp.LoginScreen"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp"
-        mc:Ignorable="d"
-        Title="Login" Height="300" Width="300">
-    <StackPanel Margin="20,0,20,0">
-        <Label Content="Login" HorizontalAlignment="Center" FontSize="25" Margin="0,10,0,10" />
-        <Separator></Separator>
-        <Label Content="Username"/>
-        <TextBox Name="txtUsername" FontSize="18"/>
-        <Label Content="Password"/>
-        <PasswordBox Name="txtPassword" FontSize="18"/>
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
-            <Button Name="btnSubmit" Content="Submit" Margin="0,0,20,0" Height="30" Width="60" Click="btnSubmit_Click"/>
-            <Button Name="btnCancel" Content="Cancel" Height="30" Width="60" Click="btnCancel_Click"/>
+        Title="Sign in" Width="420" Height="460"
+        MinWidth="360" MinHeight="380"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F6FA" FontFamily="Segoe UI" FontSize="14">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="24">
+            <TextBlock Text="Statistics Calculator"
+                       FontSize="26" FontWeight="SemiBold"
+                       Foreground="#172B4D" TextWrapping="Wrap"/>
+
+            <TextBlock Text="Demo account: assignment2 / 1111"
+                       Foreground="#52627A" TextWrapping="Wrap"
+                       Margin="0,6,0,18"/>
+
+            <Label Content="Username"
+                   Target="{Binding ElementName=txtUsername}"/>
+            <TextBox Name="txtUsername" FontSize="16" Padding="8"
+                     AutomationProperties.Name="Username"/>
+
+            <Label Content="Password"
+                   Target="{Binding ElementName=txtPassword}"
+                   Margin="0,8,0,0"/>
+            <PasswordBox Name="txtPassword" FontSize="16" Padding="8"
+                         AutomationProperties.Name="Password"/>
+
+            <TextBlock x:Name="LoginErrorText" Foreground="#B42318"
+                       TextWrapping="Wrap" Margin="0,12,0,0"/>
+
+            <Grid Margin="0,16,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button Name="btnSubmit" Content="Sign in"
+                        IsDefault="True" Padding="10,8"
+                        Margin="0,0,8,0" Click="btnSubmit_Click"/>
+
+                <Button Name="btnCancel" Grid.Column="1"
+                        Content="Exit" IsCancel="True"
+                        Padding="10,8" Click="btnCancel_Click"/>
+            </Grid>
         </StackPanel>
-    </StackPanel>
+    </ScrollViewer>
 </Window>

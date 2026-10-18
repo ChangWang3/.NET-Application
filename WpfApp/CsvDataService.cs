@@ -7,8 +7,8 @@ using Microsoft.VisualBasic.FileIO;
 
 namespace WpfApp
 {
-    // Both interfaces are actually used by the CSV window.
-    // CSV parsing, exporting, and filtering belong to this service.
+    // both interfaces are actually used by the CSV window
+    // CSV parsing, exporting, and filtering
     public class CsvDataService : ICsvReader, ICsvWriter
     {
         public List<double> Read(string csvText, bool hasHeader)
@@ -25,42 +25,42 @@ namespace WpfApp
                 : ToCsv(numbers, false);
         }
 
-        // Eugene's CSV workspace: one numeric column, with an optional header.
-        // Overloading: this version reads a CSV that has no header.
+        // CSV workspace: 1 numeric column, 1 optional header
+        // overloading: this method reads a CSV that has no header
         public static List<double> ParseCsv(string csvText)
         {
             return ParseCsv(csvText, false);
         }
 
-        // This version lets the caller explicitly choose whether to skip a header.
+        // This method lets the caller choose whether to skip a header
         public static List<double> ParseCsv(string csvText, bool hasHeader)
         {
-            ArgumentNullException.ThrowIfNull(csvText);
-            List<double> numbers = new List<double>();
-            using StringReader reader = new StringReader(csvText.TrimStart('\uFEFF'));
-            using TextFieldParser parser = new TextFieldParser(reader);
-            parser.SetDelimiters(",");
-            parser.HasFieldsEnclosedInQuotes = true;
-            parser.TrimWhiteSpace = true;
-            int recordNumber = 0;
+            ArgumentNullException.ThrowIfNull(csvText); 
+            List<double> numbers = new List<double>(); //create list to store valid numbers
+            using StringReader reader = new StringReader(csvText.TrimStart('\uFEFF')); //read in contents from the string, and clear byte order mark at the beginning
+            using TextFieldParser parser = new TextFieldParser(reader); //create .Net tool, read in contents from reader, recognize csv elements
+            parser.SetDelimiters(","); //allow comma
+            parser.HasFieldsEnclosedInQuotes = true; //allow quotes like "2.7"
+            parser.TrimWhiteSpace = true; //clear the space before the numbers
+            int recordNumber = 0; //how many csv had been read
 
             try
             {
-                while (!parser.EndOfData)
+                while (!parser.EndOfData) 
                 {
                     string[]? fields = parser.ReadFields();
-                    if (fields == null)
+                    if (fields == null) // no contents
                     {
                         break;
                     }
 
                     recordNumber++;
-                    if (fields.Length != 1)
+                    if (fields.Length != 1) // can only use 1 column
                     {
                         throw new FormatException($"Record {recordNumber}: use one numeric column, one number per row.");
                     }
 
-                    if (hasHeader && recordNumber == 1)
+                    if (hasHeader && recordNumber == 1) // have header or not
                     {
                         continue;
                     }
@@ -79,7 +79,7 @@ namespace WpfApp
                     numbers.Add(value);
                 }
             }
-            catch (MalformedLineException exception)
+            catch (MalformedLineException exception) // when parser.ReadFields() catch invalid contents
             {
                 throw new FormatException($"Invalid CSV quoting near line {parser.ErrorLineNumber}.", exception);
             }
@@ -106,17 +106,9 @@ namespace WpfApp
                 throw new ArgumentException("Export requires at least one finite number and no invalid values.", nameof(numbers));
             }
 
-            // R preserves the numeric value when the exported CSV is read again.
+            // R preserves the numeric value when the exported CSV is read again (round trip format)
             string rows = string.Join("\r\n", numbers.Select(value => value.ToString("R", CultureInfo.InvariantCulture)));
             return (includeHeader ? "Value\r\n" : "") + rows + "\r\n";
-        }
-
-        public static List<double> PositiveCsvValues(List<double> numbers)
-        {
-            ArgumentNullException.ThrowIfNull(numbers);
-            // A LINQ lambda: keep each value only when it is greater than zero.
-            // ToList creates a new list, so the imported data stays unchanged.
-            return numbers.Where(value => value > 0).ToList();
         }
     }
 }

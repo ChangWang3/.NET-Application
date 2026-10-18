@@ -1,24 +1,60 @@
-﻿//using System.Text;
+﻿using System;
+using System.Globalization;
 using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Navigation;
-//using System.Windows.Shapes;
 
 namespace WpfApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+    //interaction logic for MainWindow.xaml
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void QuickCalculate_Click(object sender, RoutedEventArgs e)
+        {
+            QuickResultText.Text = "";
+            QuickErrorText.Text = "";
+
+            // TryParse checks the text; IsFinite rejects NaN and infinity.
+            if (!double.TryParse(FirstNumberTextBox.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double first)
+                || !double.TryParse(SecondNumberTextBox.Text, NumberStyles.Float, CultureInfo.InvariantCulture, out double second)
+                || !double.IsFinite(first) || !double.IsFinite(second))
+            {
+                QuickErrorText.Text = "Enter two finite numbers, for example -2 or 3.5.";
+                return;
+            }
+
+            double result;
+            if (OperationComboBox.SelectedIndex == 0)
+                result = first + second;
+            else if (OperationComboBox.SelectedIndex == 1)
+                result = first - second;
+            else if (OperationComboBox.SelectedIndex == 2)
+                result = first * second;
+            else if (OperationComboBox.SelectedIndex == 3)
+            {
+                if (second == 0)
+                {
+                    QuickErrorText.Text = "Cannot divide by zero.";
+                    return;
+                }
+                result = first / second;
+            }
+            else
+            {
+                QuickErrorText.Text = "Choose an operation.";
+                return;
+            }
+
+            if (!double.IsFinite(result))
+            {
+                QuickErrorText.Text = "The result is too large. Try smaller numbers.";
+                return;
+            }
+
+            QuickResultText.Text = "Result: " + result.ToString("G10", CultureInfo.InvariantCulture); //G10 & Culture~ clears the format
         }
 
         private void LogoutBtn_Click(object sender, RoutedEventArgs e)

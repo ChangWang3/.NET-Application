@@ -1,75 +1,81 @@
 <Window x:Class="WpfApp.ProbabilityWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Binomial Probability" Width="620" Height="650"
-        MinWidth="500" MinHeight="620" WindowStartupLocation="CenterScreen"
+        xmlns:ScottPlot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
+        Title="Binomial Probability" Width="720" Height="740"
+        MinWidth="500" MinHeight="480" WindowStartupLocation="CenterScreen"
         Background="#F4F6FA" FontFamily="Segoe UI" FontSize="14">
-    <Grid Margin="20">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <StackPanel Margin="0,0,0,18">
-            <TextBlock Text="Binomial Probability" FontSize="26" FontWeight="SemiBold" Foreground="#172B4D"/>
-            <TextBlock Text="For independent trials with the same chance of success."
-                       TextWrapping="Wrap" Foreground="#52627A" Margin="0,6,0,0"/>
-        </StackPanel>
+            <StackPanel Margin="0,0,0,18">
+                <TextBlock Text="Binomial Probability" FontSize="26" FontWeight="SemiBold" Foreground="#172B4D"/>
+                <TextBlock Text="For independent trials with the same chance of success."
+                           TextWrapping="Wrap" Foreground="#52627A" Margin="0,6,0,0"/>
+            </StackPanel>
 
-        <Border Grid.Row="1" Background="White" BorderBrush="#D8E0EC" BorderThickness="1" CornerRadius="6" Padding="16">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
+            <Border Grid.Row="1" Background="White" BorderBrush="#D8E0EC" BorderThickness="1" CornerRadius="6" Padding="16">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Text="Number of trials (n)" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                    <TextBox Grid.Column="1" x:Name="TrialsTextBox" Text="4" Padding="6" Margin="0,0,0,12"
+                             AutomationProperties.Name="Number of trials"/>
+                    <TextBlock Grid.Row="1" Text="Successes (k)" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="SuccessesTextBox" Text="2" Padding="6" Margin="0,0,0,12"
+                             AutomationProperties.Name="Number of successes"/>
+                    <TextBlock Grid.Row="2" Text="Success probability (p)" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="ProbabilityTextBox" Text="0.5" Padding="6" Margin="0,0,0,12"
+                             ToolTip="Enter 0 to 1. For example, 0.5 means 50 percent."
+                             AutomationProperties.Name="Success probability between zero and one"/>
+                    <TextBlock Grid.Row="3" Text="Calculation type" VerticalAlignment="Center" Margin="0,0,8,12"/>
+                    <ComboBox Grid.Row="3" Grid.Column="1" x:Name="CalculationTypeComboBox" SelectedIndex="0" Margin="0,0,0,12">
+                        <ComboBoxItem Content="Exactly k successes"/>
+                        <ComboBoxItem Content="At most k successes"/>
+                        <ComboBoxItem Content="At least k successes"/>
+                    </ComboBox>
+                    <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Foreground="#52627A" TextWrapping="Wrap"
+                               Text="n: 0–1000   |   k: 0–n   |   p: 0–1, using a decimal point"/>
+                </Grid>
+            </Border>
+
+            <Button Grid.Row="2" Content="Calculate" HorizontalAlignment="Left" Padding="20,8"
+                    Margin="0,14,0,10" IsDefault="True" Click="Calculate_Click"/>
+            <TextBlock Grid.Row="3" x:Name="ErrorText" Foreground="#B42318" TextWrapping="Wrap" Margin="0,0,0,10"/>
+
+            <Grid Grid.Row="4">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-
-                <TextBlock Text="Number of trials (n)" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                <TextBox Grid.Column="1" x:Name="TrialsTextBox" Text="4" Padding="6" Margin="0,0,0,12"
-                         AutomationProperties.Name="Number of trials"/>
-                <TextBlock Grid.Row="1" Text="Successes (k)" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                <TextBox Grid.Row="1" Grid.Column="1" x:Name="SuccessesTextBox" Text="2" Padding="6" Margin="0,0,0,12"
-                         AutomationProperties.Name="Number of successes"/>
-                <TextBlock Grid.Row="2" Text="Success probability (p)" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                <TextBox Grid.Row="2" Grid.Column="1" x:Name="ProbabilityTextBox" Text="0.5" Padding="6" Margin="0,0,0,12"
-                         ToolTip="Enter 0 to 1. For example, 0.5 means 50 percent."
-                         AutomationProperties.Name="Success probability between zero and one"/>
-                <TextBlock Grid.Row="3" Text="Calculation type" VerticalAlignment="Center" Margin="0,0,8,12"/>
-                <ComboBox Grid.Row="3" Grid.Column="1" x:Name="CalculationTypeComboBox" SelectedIndex="0" Margin="0,0,0,12">
-                    <ComboBoxItem Content="Exactly k successes"/>
-                    <ComboBoxItem Content="At most k successes"/>
-                    <ComboBoxItem Content="At least k successes"/>
-                </ComboBox>
-                <TextBlock Grid.Row="4" Grid.ColumnSpan="2" Foreground="#52627A" TextWrapping="Wrap"
-                           Text="n: 0–1000   |   k: 0–n   |   p: 0–1, using a decimal point"/>
+                <TextBlock Text="Result" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
+                <TextBox Grid.Row="1" x:Name="ResultTextBox" IsReadOnly="True" TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto" Padding="12" FontSize="16" Height="125"
+                         AutomationProperties.Name="Calculated probability and percentage"/>
+                <TextBlock Grid.Row="2" Text="Distribution"
+                           Foreground="#52627A" TextWrapping="Wrap" Margin="0,14,0,8"/>
+                <ScottPlot:WpfPlot Grid.Row="3" x:Name="DistributionPlot" Height="260"
+                                  AutomationProperties.Name="Binomial distribution bar chart"/>
             </Grid>
-        </Border>
-
-        <Button Grid.Row="2" Content="Calculate" HorizontalAlignment="Left" Padding="20,8"
-                Margin="0,14,0,10" IsDefault="True" Click="Calculate_Click"/>
-        <TextBlock Grid.Row="3" x:Name="ErrorText" Foreground="#B42318" TextWrapping="Wrap" Margin="0,0,0,10"/>
-
-        <Grid Grid.Row="4">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-            <TextBlock Text="Result" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,8"/>
-            <TextBox Grid.Row="1" x:Name="ResultTextBox" IsReadOnly="True" TextWrapping="Wrap"
-                     VerticalScrollBarVisibility="Auto" Padding="12" FontSize="16" MinHeight="90"
-                     AutomationProperties.Name="Calculated probability and percentage"/>
-            <TextBlock Grid.Row="2" Text="Example: success can mean getting heads in a coin flip."
-                       Foreground="#52627A" TextWrapping="Wrap" Margin="0,12,0,0"/>
         </Grid>
-    </Grid>
+    </ScrollViewer>
 </Window>
