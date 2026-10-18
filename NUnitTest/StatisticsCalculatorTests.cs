@@ -114,5 +114,13 @@ namespace NUnitTest
             result = Math.Round(result, 3);
             Assert.That(result, Is.EqualTo(expected));
         }
+
+        [Test]
+        public void BinomialProbabilityIsCorrect()
+        {
+            double result = StatisticsCalculator.BinomialProbability(4, 1, 0.5);
+
+            Assert.That(result, Is.EqualTo(0.25).Within(1e-12));
+        }
     }
 }

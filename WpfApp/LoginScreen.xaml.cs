@@ -1,14 +1,8 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Text;
+﻿using System;
+using System.Linq;
 using System.Windows;
-//using System.Windows.Controls;
-//using System.Windows.Data;
-//using System.Windows.Documents;
-//using System.Windows.Input;
-//using System.Windows.Media;
-//using System.Windows.Media.Imaging;
-//using System.Windows.Shapes;
+using Microsoft.Data.Sqlite;
+using Microsoft.EntityFrameworkCore;
 
 namespace WpfApp
 {
@@ -24,23 +18,29 @@ namespace WpfApp
 
         private void btnSubmit_Click(object sender, RoutedEventArgs e)
         {
-            string Username = txtUsername.Text;
-            string Password = txtPassword.Password;
-
-            using (UserDataContext context = new UserDataContext())
+            try
             {
-                bool userFound = context.Users.Any(user => user.Name == Username && user.Password == Password);
+                string username = txtUsername.Text.Trim();
+                string password = txtPassword.Password;
 
-                if (userFound)
+                using UserDataContext context = new UserDataContext();
+
+                bool found = context.Users.Any(user =>
+                    user.Name == username && user.Password == password);
+
+                if (!found)
                 {
-                    EnterApplication();
-                    Close();
-                } else
-                {
-                    MessageBox.Show("User not found");
+                    LoginErrorText.Text = "Incorrect username or password.";
+                    return;
                 }
-            }
 
+                EnterApplication();
+                Close();
+            }
+            catch (SqliteException exception)
+            {
+                LoginErrorText.Text = "Database error. " + exception.Message;
+            }
         }
 
         private void EnterApplication()

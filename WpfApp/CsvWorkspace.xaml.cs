@@ -4,20 +4,18 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 
 namespace WpfApp
 {
     public partial class CsvWorkspace : Window
     {
-        // The window uses contracts instead of depending on one concrete class.
+        // 2 interfaces
         private readonly ICsvReader csvReader;
         private readonly ICsvWriter csvWriter;
-        private List<double> importedValues = new List<double>();
-        private List<double> displayedValues = new List<double>();
+
+        private List<double> values = new List<double>();
 
         public CsvWorkspace()
         {
@@ -37,7 +35,7 @@ namespace WpfApp
 
             try
             {
-                if (new FileInfo(dialog.FileName).Length > 2_000_000)
+                if (new FileInfo(dialog.FileName).Length > 2_000_000) //2MB
                 {
                     ShowError("Choose a CSV smaller than 2 MB, with at most 10,000 numbers.");
                     return;
@@ -64,11 +62,10 @@ namespace WpfApp
         {
             try
             {
-                // Validate first; a failed import leaves the previous dataset intact.
-                List<double> parsedValues = csvReader.Read(text, ImportHeaderCheckBox.IsChecked == true);
-                importedValues = parsedValues;
+                // validate first; if import failed, the previous values is kept
+                values = csvReader.Read(text, ImportHeaderCheckBox.IsChecked == true);
                 RefreshPreview();
-                StatusText.Text = $"Loaded {importedValues.Count} numbers from {source}. Export saves the displayed values.";
+                StatusText.Text = $"Loaded {values.Count} numbers from {source}. Export saves the displayed values.";
                 return true;
             }
             catch (FormatException exception)
@@ -80,44 +77,14 @@ namespace WpfApp
 
         private void RefreshPreview()
         {
-            displayedValues = PositiveOnlyCheckBox.IsChecked == true
-                ? CsvDataService.PositiveCsvValues(importedValues)
-                : importedValues.ToList();
-
-            if (SortComboBox.SelectedIndex == 1)
-            {
-                displayedValues = displayedValues.OrderBy(value => value).ToList();
-            }
-            else if (SortComboBox.SelectedIndex == 2)
-            {
-                displayedValues = displayedValues.OrderByDescending(value => value).ToList();
-            }
-
-            PreviewGrid.ItemsSource = displayedValues.Select((value, index) => new
+            PreviewGrid.ItemsSource = values.Select((value, index) => new
             {
                 Row = index + 1,
                 Value = value.ToString("R", CultureInfo.InvariantCulture)
             }).ToList();
-            CountText.Text = $"{importedValues.Count} imported / {displayedValues.Count} displayed";
-            ExportButton.IsEnabled = displayedValues.Count > 0;
-            CopyButton.IsEnabled = displayedValues.Count > 0;
-        }
 
-        private void PreviewOptions_Changed(object sender, RoutedEventArgs e)
-        {
-            if (PreviewGrid != null)
-            {
-                RefreshPreview();
-            }
-        }
-
-        private void SortComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            // XAML raises this event while the controls are still being created.
-            if (PreviewGrid != null)
-            {
-                RefreshPreview();
-            }
+            CountText.Text = $"{values.Count} numbers";
+            ExportButton.IsEnabled = values.Count > 0;
         }
 
         private void ExportCsv_Click(object sender, RoutedEventArgs e)
@@ -133,9 +100,9 @@ namespace WpfApp
 
             try
             {
-                string text = csvWriter.Write(displayedValues, ExportHeaderCheckBox.IsChecked == true);
+                string text = csvWriter.Write(values, ExportHeaderCheckBox.IsChecked == true);
                 File.WriteAllText(dialog.FileName, text, new UTF8Encoding(false));
-                StatusText.Text = $"Exported {displayedValues.Count} displayed numbers to {Path.GetFileName(dialog.FileName)}.";
+                StatusText.Text = $"Exported {values.Count} displayed numbers to {Path.GetFileName(dialog.FileName)}.";
             }
             catch (Exception exception) when (exception is IOException || exception is UnauthorizedAccessException || exception is ArgumentException)
             {
@@ -143,23 +110,9 @@ namespace WpfApp
             }
         }
 
-        private void CopyNumbers_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string text = string.Join(",", displayedValues.Select(value => value.ToString("R", CultureInfo.InvariantCulture)));
-                Clipboard.SetText(text);
-                StatusText.Text = "Copied displayed numbers. Paste them into the statistics input box.";
-            }
-            catch (ExternalException)
-            {
-                ShowError("The clipboard is busy. Please try copying again.");
-            }
-        }
-
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
-            importedValues.Clear();
+            values.Clear();
             CsvInputTextBox.Clear();
             RefreshPreview();
             StatusText.Text = "Workspace cleared.";

@@ -152,24 +152,22 @@ namespace WpfApp
             return (slope, intercept);
         }
 
-        // Probability feature: binomial distribution.
-        // Each trial is independent and has the same chance of success.
-        // trials = n, successes = k, successProbability = p (from 0 to 1).
-        // All returned probabilities are from 0 to 1, not percentages.
+        // binomial distribution feature
+        // each trial is independent and has the same chance of success,trials = n, successes = k, successProbability = p (from 0 to 1)
         public static double BinomialProbability(int trials, int successes, double successProbability)
         {
             ValidateBinomialInput(trials, successes, successProbability);
 
-            // P(X = k) = C(n, k) * p^k * (1 - p)^(n - k).
-            // A loop calculates the combination and p^k without factorials.
+            // P(X = k) = C(n, k) * p^k * (1 - p)^(n - k), exactly k successes
+            // calculate C(n,k) and p^k first, break them down not using factorials
             double probability = 1;
             for (int i = 1; i <= successes; i++)
             {
                 probability *= (trials - i + 1) / (double)i;
                 probability *= successProbability;
             }
-
-            for (int i = 0; i < trials - successes; i++)
+            // multiply the first part with (1-p)^(n-k)
+            for (int i = 1; i <= trials - successes; i++)
             {
                 probability *= 1 - successProbability;
             }
@@ -177,7 +175,7 @@ namespace WpfApp
             return Math.Clamp(probability, 0, 1);
         }
 
-        // P(X <= k): add the probabilities for 0, 1, ..., k successes.
+        // P(X <= k): add the probabilities for 0 to k successes, at most k successes
         public static double BinomialAtMostProbability(int trials, int successes, double successProbability)
         {
             ValidateBinomialInput(trials, successes, successProbability);
@@ -191,7 +189,7 @@ namespace WpfApp
             return Math.Clamp(total, 0, 1);
         }
 
-        // P(X >= k): add the probabilities for k, k + 1, ..., n successes.
+        // P(X >= k): add the probabilities for k to n successes, at least k successes
         public static double BinomialAtLeastProbability(int trials, int successes, double successProbability)
         {
             ValidateBinomialInput(trials, successes, successProbability);
@@ -205,11 +203,11 @@ namespace WpfApp
             return Math.Clamp(total, 0, 1);
         }
 
-        // The list index is the success count k; the value is P(X = k).
-        // This supplies the probabilities for a chart from k = 0 to n.
+        // the list index is the k, the value is P(X = k), return back to DrawDistribution method so it can draw all the pillars for k
+        // offer the probabilities for the chart from k = 0 to n
         public static List<double> BinomialDistribution(int trials, double successProbability)
         {
-            ValidateBinomialInput(trials, 0, successProbability);
+            ValidateBinomialInput(trials, 0, successProbability); // use 0 simply to input and validate with the other 2 numbers
 
             List<double> probabilities = new List<double>();
             for (int k = 0; k <= trials; k++)
@@ -222,7 +220,7 @@ namespace WpfApp
 
         private static void ValidateBinomialInput(int trials, int successes, double successProbability)
         {
-            // Limit n to 1000 so the combination calculation fits in a double.
+            // Limit n to 1000 so the combination calculation fits in a double
             if (trials < 0 || trials > 1000)
             {
                 throw new ArgumentOutOfRangeException(nameof(trials), "Trials must be between 0 and 1000.");

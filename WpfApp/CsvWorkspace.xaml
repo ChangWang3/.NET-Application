@@ -34,20 +34,9 @@
             <WrapPanel>
                 <Button Content="Import CSV..." Click="ImportCsv_Click" ToolTip="Select a UTF-8 CSV with one numeric column"/>
                 <Button x:Name="ExportButton" Content="Export displayed CSV..." Click="ExportCsv_Click" IsEnabled="False"/>
-                <Button x:Name="CopyButton" Content="Copy displayed numbers" Click="CopyNumbers_Click" IsEnabled="False"
-                        ToolTip="Copy comma-separated values for the statistics input box"/>
                 <Button Content="Clear" Click="Clear_Click"/>
             </WrapPanel>
             <WrapPanel Margin="0,0,0,8">
-                <CheckBox x:Name="PositiveOnlyCheckBox" Content="Only positive values (&gt; 0)"
-                          Checked="PreviewOptions_Changed" Unchecked="PreviewOptions_Changed"/>
-                <TextBlock Text="Order:" VerticalAlignment="Center" Margin="0,0,8,8"/>
-                <ComboBox x:Name="SortComboBox" Width="150" SelectedIndex="0" Margin="0,0,16,8"
-                          VerticalAlignment="Center" SelectionChanged="SortComboBox_SelectionChanged">
-                    <ComboBoxItem Content="Original order"/>
-                    <ComboBoxItem Content="Smallest first"/>
-                    <ComboBoxItem Content="Largest first"/>
-                </ComboBox>
                 <CheckBox x:Name="ExportHeaderCheckBox" Content="Export a Value header" IsChecked="True"/>
             </WrapPanel>
         </StackPanel>
@@ -92,7 +81,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Data preview" FontSize="18" FontWeight="SemiBold"/>
-                    <TextBlock Grid.Row="1" x:Name="CountText" Text="0 imported / 0 displayed"
+                    <TextBlock Grid.Row="1" x:Name="CountText" Text="0 numbers"
                                Margin="0,6,0,12" Foreground="#52627A" TextWrapping="Wrap"/>
                     <DataGrid Grid.Row="2" x:Name="PreviewGrid" AutoGenerateColumns="False" IsReadOnly="True"
                               CanUserAddRows="False" CanUserDeleteRows="False" CanUserSortColumns="False"
